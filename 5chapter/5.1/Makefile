@@ -1,4 +1,5 @@
-BASEINCLUDE ?= /home/pain/workplace/learn_kernel/kernel4.0
+#BASEINCLUDE ?= /home/pain/workplace/learn_kernel/kernel4.0
+BASEINCLUDE ?= /home/pain/code/kernel4.0 
 
 mydemo-objs := my_demodev.o
 
@@ -10,4 +11,4 @@ all:
 
 clean:
 	$(MAKE) -C $(BASEINCLUDE) SUBDIRS=$(PWD) clean;
-	rm -f *.ko
+	@rm -f *.ko
