@@ -6,6 +6,7 @@ mydemo_misc_v-objs := my_demodev.o
 obj-m := mydemo_misc_v.o
 
 
+
 all:
 	$(MAKE) -C $(BASEINCLUDE) M=$(PWD) modules;
 

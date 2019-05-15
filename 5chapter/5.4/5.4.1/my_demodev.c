@@ -68,6 +68,7 @@ static ssize_t demodrv_write(struct file *file, const char __user *buf, size_t l
 	int actual_write;
 	int ret;
 
+
 	free = MAX_DEVICE_BUFFER_SIZE - *ppos;
 	need_write = free > lbuf ? lbuf : free;
 	if(0 == need_write){
