@@ -28,6 +28,7 @@ int main(){
         ret = read(fd,read_buffer,2*len);
         printf("read %d bytes\n",ret);
         printf("read buffer=%s\n",read_buffer);
+        memset(read_buffer,0,2*len);
 
         /* 1. write the message to device*/
         ret = write(fd,(char *)message,len);
@@ -44,8 +45,21 @@ int main(){
         ret = read(fd,read_buffer,2*len);
         printf("read %d bytes\n",ret);
         printf("read buffer=%s\n",read_buffer);
+        memset(read_buffer,0,2*len);
 
+        ret = read(fd,read_buffer,2*len);
+        printf("read %d bytes\n",ret);
+        printf("read buffer=%s\n",read_buffer);
+        memset(read_buffer,0,2*len);
 
+        ret = write(fd,(char *)message,len);
+        if(ret <= 0){
+                printf("can not write on device:%d, ret = %d\n",fd,ret);
+        }
+        ret = read(fd,read_buffer,2*len);
+        printf("read %d bytes\n",ret);
+        printf("read buffer=%s\n",read_buffer);
+        memset(read_buffer,0,2*len);
         close(fd);
     return 0;
 }
