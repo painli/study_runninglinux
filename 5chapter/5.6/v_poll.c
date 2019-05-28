@@ -97,7 +97,7 @@ static ssize_t demodrv_read(struct file *file, char __user *buf, size_t lbuf, lo
 
 
         printk(KERN_ERR "%s: actual_read = %d, pos = %lld\n",__func__,actual_read,*ppos);
-
+        return actual_read;
 }
 
 static ssize_t demodrv_write(struct file *file, const char __user *buf, size_t lbuf, loff_t *ppos){
