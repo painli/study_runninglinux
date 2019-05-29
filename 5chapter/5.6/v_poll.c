@@ -48,16 +48,21 @@ static int demodrv_open(struct inode *inode, struct file *file){
 
 static unsigned int demodrv_poll(struct file *file, struct poll_table_struct * wait){
         int mask = 0;
+        printk(KERN_ERR "%s enter,pid = %d\n",__func__,current->pid);
         struct mydemo_private_data* data = file->private_data;
         struct mydemo_device* device = data->device;
 
         poll_wait(file,&device->read_queue,wait);
         poll_wait(file,&device->write_queue,wait);
 
-        if(!kfifo_is_empty(&device->mydemo_fifo))
+        if(!kfifo_is_empty(&device->mydemo_fifo)){
                 mask |= POLLIN | POLLRDNORM;
-        if(!kfifo_is_full(&device->mydemo_fifo))
+                printk(KERN_ERR "lines+%d: POLLIN\n",__LINE__);
+        }
+        if(!kfifo_is_full(&device->mydemo_fifo)){
                 mask |= POLLOUT | POLLWRNORM;
+                printk(KERN_ERR "lines+%d: POLLOUT\n",__LINE__);
+        }
         return mask;
 }
 static int demodrv_release(struct inode *inode, struct file *file){
@@ -92,6 +97,7 @@ static ssize_t demodrv_read(struct file *file, char __user *buf, size_t lbuf, lo
                 return -EIO;
         }
         if(!kfifo_is_full(&device->mydemo_fifo)){
+                printk(KERN_ERR "%s:%d pid=%d wake up write_queue\n",__func__,__LINE__,current->pid);
                 wake_up_interruptible(&device->write_queue);
         }
 
@@ -126,6 +132,7 @@ static ssize_t demodrv_write(struct file *file, const char __user *buf, size_t l
         }
 
         if(!kfifo_is_empty(&device->mydemo_fifo)){
+                printk(KERN_ERR "%s:%d pid=%d wake up read_queue\n",__func__,__LINE__,current->pid);
                 wake_up_interruptible(&device->read_queue);
         }
 
